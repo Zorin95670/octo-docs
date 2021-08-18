@@ -1043,6 +1043,12 @@ roles | Array | List of user role
   * Managing user (enable/disable and add new user)
   * Managing user roles
   * Notification center for user. Send mail on wanted deployment.
+* Add explanation/schema on models
+* Add "auto-refresh" fonctionnality
+* Add information on project/deployment card like :
+  * Jira
+  * Sonar
+  * ssh
 
 And many more!
 
