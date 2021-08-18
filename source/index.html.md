@@ -686,18 +686,42 @@ inProgress | Boolean | No, default `false` | Is in progress.
 curl                                           \
   --header "Authorization: Basic BASE64_TOKEN" \
   --request DELETE                             \
-  http://spy:8080/octo-spy/api/deployment/[id]
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/deployment/progress
+```
+
+> Example of data to send:
+
+```json
+{
+  "environment": "Production",
+  "project": "octo-spy",
+  "client": "SomeClient",
+  "version": "1.0.0",
+}
 ```
 
 * Need to authentication: **Yes**
-* Path: `/octo-spy/api/deployment/[id]`
+* Path: `/octo-spy/api/deployment/progress`
 * Method: `DELETE`
-* Query parameter:
-  * `id`: id of deployment
+* Data type: `JSON`
 * Success status: `204 - No content`
 * Errors status:
-  * `400 - Field value is empty`: On blank id
-  * `404 - Entity not found`: On unknown id
+  * `400 - Field value is empty`: On blank environment or project
+  * `404 - Entity not found`: On unknown environment, project, deployment or deploymentProgress
+
+<aside class="notice">
+Data is used to identify progress deployment to delete.
+</aside>
+
+Available body parameters:
+
+Field name | Search type | Mandatory
+---------- | ----------- | ---------
+environment | TEXT | Yes
+project | TEXT | Yes
+client | TEXT | No
+version | TEXT | No
 
 ## Environment
 
