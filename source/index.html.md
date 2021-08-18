@@ -21,8 +21,8 @@ Welcome to the Octo! You can use this tools to register and display all applicat
 Octo is composed of three components:
 
 * Database: postgresql version 13.3
-* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.10.0) made in Java
-* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.3.0) made in Vue-js
+* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.11.0) made in Java
+* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.5.0) made in Vue-js
 
 ## Docker
 > Build `octo-spy` and `octo-board` docker images:
@@ -35,7 +35,7 @@ docker build -t octo-board octo-board/
 
 To use Octo with docker you must build `octo-spy` and `octo-board` images.
 
-Once images build, you can setup your environment like the [compose example](https://github.com/Zorin95670/octo/blob/1.1.0/docker-compose.yml).
+Once images build, you can setup your environment like the [compose example](https://github.com/Zorin95670/octo/blob/1.2.0/docker-compose.yml).
 
 Don't forget to setup volume for database.
 
@@ -846,6 +846,44 @@ Field name | Search type
 id | NUMBER
 name | TEXT
 
+### Update a project
+
+> Update a project
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --header "Content-Type: application/json"    \
+  --request PATCH                              \
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/project/[id]
+```
+
+> Example of data to send:
+
+```json
+{
+  "name": "octo",
+  "color": "12,23,199"
+}
+```
+
+* Need to authentication: **Yes**
+* Path: `/octo-spy/api/project`
+* Method: `PATCH`
+* Data type: `JSON`
+* Success status: `204 - No content`
+* Errors status:
+  * `400 - Field value is empty`: On blank id
+  * `404 - Entity not found`: On unknown id
+
+Body parameters:
+
+Key | Type | Mandatory | Description
+--- | ---- | --------- | -----------
+name | String | No | Project name
+color | String | No | Color of project, format 'R,G,B' where R/G/B is insteger between 0 and 255
+
 ### Create a project
 
 > Create a project
@@ -972,7 +1010,6 @@ roles | Array | List of user role
 
 ## New Features
 
-* Update project color
 * Generate token to avoid using administrator password (include new authentication type)
 * Add, update and delete environment form
 * Delete deployment in historic page
