@@ -420,8 +420,8 @@
 
 <ul>
 <li>Database: postgresql version 13.3</li>
-<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.10.0">octo-spy</a> made in Java</li>
-<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.3.0">octo-board</a> made in Vue-js</li>
+<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.11.0">octo-spy</a> made in Java</li>
+<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.5.0">octo-board</a> made in Vue-js</li>
 </ul>
 <h2 id='docker'>Docker</h2>
 <blockquote>
@@ -433,7 +433,7 @@ docker build <span class="nt">-t</span> octo-board octo-board/
 </code></pre></div>
 <p>To use Octo with docker you must build <code>octo-spy</code> and <code>octo-board</code> images.</p>
 
-<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.1.0/docker-compose.yml">compose example</a>.</p>
+<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.2.0/docker-compose.yml">compose example</a>.</p>
 
 <p>Don&#39;t forget to setup volume for database.</p>
 <h2 id='other'>Other</h2>
@@ -1277,25 +1277,67 @@ If alive is set to <code>true</code>, this will disable previous deployment with
 <div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
   <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
   <span class="nt">--request</span> DELETE                             <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment/[id]
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/deployment/progress
 </code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"project"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo-spy"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"client"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeClient"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
-<li>Path: <code>/octo-spy/api/deployment/[id]</code></li>
+<li>Path: <code>/octo-spy/api/deployment/progress</code></li>
 <li>Method: <code>DELETE</code></li>
-<li>Query parameter:
-
-<ul>
-<li><code>id</code>: id of deployment</li>
-</ul></li>
+<li>Data type: <code>JSON</code></li>
 <li>Success status: <code>204 - No content</code></li>
 <li>Errors status:
 
 <ul>
-<li><code>400 - Field value is empty</code>: On blank id</li>
-<li><code>404 - Entity not found</code>: On unknown id</li>
+<li><code>400 - Field value is empty</code>: On blank environment or project</li>
+<li><code>404 - Entity not found</code>: On unknown environment, project, deployment or deploymentProgress</li>
 </ul></li>
 </ul>
+
+<aside class="notice">
+Data is used to identify progress deployment to delete.
+</aside>
+
+<p>Available body parameters:</p>
+
+<table><thead>
+<tr>
+<th>Field name</th>
+<th>Search type</th>
+<th>Mandatory</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>environment</td>
+<td>TEXT</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>project</td>
+<td>TEXT</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>client</td>
+<td>TEXT</td>
+<td>No</td>
+</tr>
+<tr>
+<td>version</td>
+<td>TEXT</td>
+<td>No</td>
+</tr>
+</tbody></table>
 <h2 id='environment'>Environment</h2><h3 id='get-all-environments'>Get all environments</h3>
 <blockquote>
 <p>Get all application environments</p>
@@ -1509,6 +1551,62 @@ If alive is set to <code>true</code>, this will disable previous deployment with
 <td>TEXT</td>
 </tr>
 </tbody></table>
+<h3 id='update-a-project'>Update a project</h3>
+<blockquote>
+<p>Update a project</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
+  <span class="nt">--request</span> PATCH                              <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/project/[id]
+</code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"color"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12,23,199"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/project</code></li>
+<li>Method: <code>PATCH</code></li>
+<li>Data type: <code>JSON</code></li>
+<li>Success status: <code>204 - No content</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>400 - Field value is empty</code>: On blank id</li>
+<li><code>404 - Entity not found</code>: On unknown id</li>
+</ul></li>
+</ul>
+
+<p>Body parameters:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>No</td>
+<td>Project name</td>
+</tr>
+<tr>
+<td>color</td>
+<td>String</td>
+<td>No</td>
+<td>Color of project, format &#39;R,G,B&#39; where R/G/B is insteger between 0 and 255</td>
+</tr>
+</tbody></table>
 <h3 id='create-a-project'>Create a project</h3>
 <blockquote>
 <p>Create a project</p>
@@ -1694,7 +1792,6 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 </tbody></table>
 <h1 id='future-developments'>Future developments</h1><h2 id='new-features'>New Features</h2>
 <ul>
-<li>Update project color</li>
 <li>Generate token to avoid using administrator password (include new authentication type)</li>
 <li>Add, update and delete environment form</li>
 <li>Delete deployment in historic page</li>
@@ -1706,6 +1803,15 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 <li>Managing user (enable/disable and add new user)</li>
 <li>Managing user roles</li>
 <li>Notification center for user. Send mail on wanted deployment.</li>
+</ul></li>
+<li>Add explanation/schema on models</li>
+<li>Add &quot;auto-refresh&quot; fonctionnality</li>
+<li>Add information on project/deployment card like :
+
+<ul>
+<li>Jira</li>
+<li>Sonar</li>
+<li>ssh</li>
 </ul></li>
 </ul>
 
