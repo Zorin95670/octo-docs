@@ -21,8 +21,8 @@ Welcome to the Octo! You can use this tools to register and display all applicat
 Octo is composed of three components:
 
 * Database: postgresql version 13.3
-* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.11.0) made in Java
-* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.5.0) made in Vue-js
+* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.11.1) made in Java
+* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.6.1) made in Vue-js
 
 ## Docker
 > Build `octo-spy` and `octo-board` docker images:
@@ -35,7 +35,7 @@ docker build -t octo-board octo-board/
 
 To use Octo with docker you must build `octo-spy` and `octo-board` images.
 
-Once images build, you can setup your environment like the [compose example](https://github.com/Zorin95670/octo/blob/1.2.0/docker-compose.yml).
+Once images build, you can setup your environment like the [compose example](https://github.com/Zorin95670/octo/blob/1.3.0/docker-compose.yml).
 
 Don't forget to setup volume for database.
 
@@ -337,8 +337,8 @@ Ouput date format: `yyyy/MM/dd HH:mm:ss`
 
 Apply for all endpoint that need authentication.
 
-* `400 - Authentication error`: On bad authorization property
-* `400 - Authentication error`: On bad authentication scheme
+* `401 - Authentication error`: On bad authorization property
+* `401 - Authentication error`: On bad authentication scheme
 * `401 - Authentication has failed`: On authentication error
 
 ## Administrator
