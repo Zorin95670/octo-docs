@@ -420,8 +420,8 @@
 
 <ul>
 <li>Database: postgresql version 13.3</li>
-<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.11.0">octo-spy</a> made in Java</li>
-<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.5.0">octo-board</a> made in Vue-js</li>
+<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.11.1">octo-spy</a> made in Java</li>
+<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.6.1">octo-board</a> made in Vue-js</li>
 </ul>
 <h2 id='docker'>Docker</h2>
 <blockquote>
@@ -433,7 +433,7 @@ docker build <span class="nt">-t</span> octo-board octo-board/
 </code></pre></div>
 <p>To use Octo with docker you must build <code>octo-spy</code> and <code>octo-board</code> images.</p>
 
-<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.2.0/docker-compose.yml">compose example</a>.</p>
+<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.3.0/docker-compose.yml">compose example</a>.</p>
 
 <p>Don&#39;t forget to setup volume for database.</p>
 <h2 id='other'>Other</h2>
@@ -768,8 +768,8 @@ Default user password is <code>password</code>.</p>
 <p>Apply for all endpoint that need authentication.</p>
 
 <ul>
-<li><code>400 - Authentication error</code>: On bad authorization property</li>
-<li><code>400 - Authentication error</code>: On bad authentication scheme</li>
+<li><code>401 - Authentication error</code>: On bad authorization property</li>
+<li><code>401 - Authentication error</code>: On bad authentication scheme</li>
 <li><code>401 - Authentication has failed</code>: On authentication error</li>
 </ul>
 <h2 id='administrator'>Administrator</h2><h3 id='update-administrator-password'>Update administrator password</h3>
