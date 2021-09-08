@@ -337,8 +337,8 @@ Ouput date format: `yyyy/MM/dd HH:mm:ss`
 
 Apply for all endpoint that need authentication.
 
-* `400 - Authentication error`: On bad authorization property
-* `400 - Authentication error`: On bad authentication scheme
+* `401 - Authentication error`: On bad authorization property
+* `401 - Authentication error`: On bad authentication scheme
 * `401 - Authentication has failed`: On authentication error
 
 ## Administrator
