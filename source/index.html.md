@@ -718,10 +718,15 @@ Available body parameters:
 
 Field name | Search type | Mandatory
 ---------- | ----------- | ---------
+id | NUMBER | No
+projectId | NUMBER | No
 environment | TEXT | Yes
 project | TEXT | Yes
+masterProject | TEXT | No
 client | TEXT | No
 version | TEXT | No
+alive | BOOLEAN | No
+inProgress | BOOLEAN | No
 
 ## Environment
 
