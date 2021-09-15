@@ -21,8 +21,8 @@ Welcome to the Octo! You can use this tools to register and display all applicat
 Octo is composed of three components:
 
 * Database: postgresql version 13.3
-* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.11.1) made in Java
-* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.6.1) made in Vue-js
+* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.11.2) made in Java
+* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.6.2) made in Vue-js
 
 ## Docker
 > Build `octo-spy` and `octo-board` docker images:
@@ -718,10 +718,15 @@ Available body parameters:
 
 Field name | Search type | Mandatory
 ---------- | ----------- | ---------
+id | NUMBER | No
+projectId | NUMBER | No
 environment | TEXT | Yes
 project | TEXT | Yes
+masterProject | TEXT | No
 client | TEXT | No
 version | TEXT | No
+alive | BOOLEAN | No
+inProgress | BOOLEAN | No
 
 ## Environment
 
