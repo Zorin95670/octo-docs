@@ -420,8 +420,8 @@
 
 <ul>
 <li>Database: postgresql version 13.3</li>
-<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.11.1">octo-spy</a> made in Java</li>
-<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.6.1">octo-board</a> made in Vue-js</li>
+<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.11.2">octo-spy</a> made in Java</li>
+<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.6.2">octo-board</a> made in Vue-js</li>
 </ul>
 <h2 id='docker'>Docker</h2>
 <blockquote>
@@ -1318,6 +1318,16 @@ Data is used to identify progress deployment to delete.
 </tr>
 </thead><tbody>
 <tr>
+<td>id</td>
+<td>NUMBER</td>
+<td>No</td>
+</tr>
+<tr>
+<td>projectId</td>
+<td>NUMBER</td>
+<td>No</td>
+</tr>
+<tr>
 <td>environment</td>
 <td>TEXT</td>
 <td>Yes</td>
@@ -1328,6 +1338,11 @@ Data is used to identify progress deployment to delete.
 <td>Yes</td>
 </tr>
 <tr>
+<td>masterProject</td>
+<td>TEXT</td>
+<td>No</td>
+</tr>
+<tr>
 <td>client</td>
 <td>TEXT</td>
 <td>No</td>
@@ -1335,6 +1350,16 @@ Data is used to identify progress deployment to delete.
 <tr>
 <td>version</td>
 <td>TEXT</td>
+<td>No</td>
+</tr>
+<tr>
+<td>alive</td>
+<td>BOOLEAN</td>
+<td>No</td>
+</tr>
+<tr>
+<td>inProgress</td>
+<td>BOOLEAN</td>
 <td>No</td>
 </tr>
 </tbody></table>
