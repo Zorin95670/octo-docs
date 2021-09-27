@@ -142,18 +142,12 @@ curl                                           \
 
 You need to use token given by application when you create a token.
 
-> Data to send:
+## Create master and sub-project
 
-```json
-{
-  "name": "octo-spy",
-  "masterName": "octo"
-}
-```
+Go to octo-board, as administrator go to master project page, to create master project.
 
-A sub-project is a component of master project.
+To create sub-project, still as administrator, go to master project page and go to sub-project page.
 
-For example, `octo-spy` and `octo-board` are a sub-projects of `octo`.
 
 ## Register `in progress` deployment
 
@@ -1111,7 +1105,7 @@ curl                                           \
 
 * Add, update and delete environment form
 * Delete deployment in historic page
-* Create/delete project in administration page
+* Delete master project
 * LDAP authentication, imply this features:
   * LDAP settings page
   * Managing user (enable/disable and add new user)
