@@ -69,8 +69,9 @@ Before running API for the first time, you must initialize your database with th
 # Install project dependencies
 npm install --legacy-peer-deps
 
-# Build changelog page
+# Build changelog page and json
 npm run changelog --silent > public/changelog.html
+RUN npm run changelogToJson
 
 # Build project
 npm run build
