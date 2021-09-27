@@ -115,6 +115,8 @@ octo-spy.database.password | password | Database user password.
 
 ## Authentication
 
+### Basic authentication
+
 > Authentication example to get user information
 
 ```bash
@@ -126,44 +128,18 @@ curl                                           \
 
 You need to encode in base64 your `user:password`.
 
-## Register master project
+### Token authentication
 
-> Register octo as master project
-
-```bash
-curl                                           \
-  --header "Authorization: Basic BASE64_TOKEN" \
-  --header "Content-Type: application/json"    \
-  --request POST                               \
-  --data 'DATA_TO_SEND'                                 \
-  http://spy:8080/octo-spy/api/project
-```
-
-> Data to send:
-
-```json
-{
-  "name": "octo",
-  "isMaster": true
-}
-```
-
-A master project is a project that contains multiple sub-projects.
-
-Default dashboard application displays only master projects.
-
-## Register sub-project
-
-> Register octo-spy as sup-project of octo
+> Authentication example to get user information
 
 ```bash
 curl                                           \
-  --header "Authorization: Basic BASE64_TOKEN" \
-  --header "Content-Type: application/json"    \
-  --request POST                               \
-  --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/project
+  --header "Authorization: Token TOKEN" \
+  --request GET                                \
+  http://spy:8080/octo-spy/api/users/me
 ```
+
+You need to use token given by application when you create a token.
 
 > Data to send:
 
@@ -356,6 +332,7 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
+* Token allowed: No
 * Path: `/octo-spy/api/administrator/password`
 * Method: `PUT`
 * Data type: `String` encoded in base64
@@ -380,6 +357,7 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
+* Token allowed: No
 * Path: `/octo-spy/api/administrator/email`
 * Method: `PUT`
 * Data type: `String`
@@ -417,6 +395,7 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
+* Token allowed: No
 * Path: `/octo-spy/api/alerts`
 * Method: `GET`
 * Success status:
@@ -656,6 +635,7 @@ curl                                           \
 
 * Need to authentication: **Yes**
 * Path: `/octo-spy/api/deployment`
+* Token allowed: **Yes**
 * Method: `POST`
 * Data type: `JSON`
 * Success status: `201 - Created`
@@ -703,6 +683,7 @@ curl                                           \
 
 * Need to authentication: **Yes**
 * Path: `/octo-spy/api/deployment/progress`
+* Token allowed: **Yes**
 * Method: `DELETE`
 * Data type: `JSON`
 * Success status: `204 - No content`
@@ -899,6 +880,7 @@ curl                                           \
 
 * Need to authentication: **Yes**
 * Path: `/octo-spy/api/project`
+* Token allowed: No
 * Method: `PATCH`
 * Data type: `JSON`
 * Success status: `204 - No content`
@@ -949,6 +931,7 @@ curl                                           \
 
 * Need to authentication: **Yes**
 * Path: `/octo-spy/api/project`
+* Token allowed: No
 * Method: `POST`
 * Data type: `JSON`
 * Success status: `201 - Created`
@@ -981,6 +964,7 @@ curl                                           \
 
 * Need to authentication: **Yes**
 * Path: `/octo-spy/api/project/[id]`
+* Token allowed: No
 * Method: `DELETE`
 * Query parameter:
   * `id`: id of project
@@ -1020,6 +1004,7 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
+* Token allowed: **Yes**
 * Path: `/octo-spy/api/users/me`
 * Method: `GET`
 * Success status: `200 - Ok`
@@ -1035,11 +1020,94 @@ user.insertDate | Date | Creation date, format: `yyyy/MM/dd HH:mm:ss`
 user.updateDate | Date | Last update date, format: `yyyy/MM/dd HH:mm:ss`
 roles | Array | List of user role
 
+### Create a user token
+
+> Create a user token
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --header "Content-Type: application/json"    \
+  --request POST                               \
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/users/token
+```
+
+> Example of data to send:
+
+```json
+TOKEN_NAME
+```
+
+> Example of success:
+
+```json
+{
+  "token": "generated token value"
+}
+```
+
+* Need to authentication: **Yes**
+* Token allowed: No
+* Path: `/octo-spy/api/users/token`
+* Method: `POST`
+* Data type: `JSON`
+* Success status: `201 - Created`
+* Errors status:
+  * `400 - Wrong field value`: On duplicate token name for an user
+
+Body parameters: Token name.
+
+### Delete a user token
+
+> delete a user token
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --request DELETE                             \
+  http://spy:8080/octo-spy/api/users/token/[name]
+```
+
+* Need to authentication: **Yes**
+* Token allowed: No
+* Path: `/octo-spy/api/users/token/[name]`
+* Method: `DELETE`
+* Query parameter:
+  * `name`: token name
+* Success status: `204 - No content`
+* Errors status:
+  * `400 - Field value is empty`: On blank name
+  * `404 - Entity not found`: On unknown token for user
+
+### Get all token's names of a user 
+
+> Get all token's names of a user
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --request GET                                \
+  http://spy:8080/octo-spy/api/users/token
+```
+
+> Example of success:
+
+```json
+["token1", "token2"]
+```
+
+* Need to authentication: Yes
+* Token allowed: No
+* Path: `/octo-spy/api/users/token`
+* Method: `GET`
+* Success status:
+  * `200 - Ok`: When all resources are returned
+
 # Future developments
 
 ## New Features
 
-* Generate token to avoid using administrator password (include new authentication type)
 * Add, update and delete environment form
 * Delete deployment in historic page
 * Create/delete project in administration page
