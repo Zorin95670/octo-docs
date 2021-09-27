@@ -165,7 +165,7 @@ curl                                           \
   --header "Content-Type: application/json"    \
   --request POST                               \
   --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/deployment
+  http://spy:8080/octo-spy/api/deployments
 ```
 
 > Data to send:
@@ -202,7 +202,7 @@ curl                                           \
   --header "Content-Type: application/json"    \
   --request DELETE                             \
   --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/deployment/progress
+  http://spy:8080/octo-spy/api/deployments/progress
 ```
 
 > Data to send:
@@ -424,7 +424,7 @@ There is only 3 alerts:
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/client
+  http://spy:8080/octo-spy/api/clients
 ```
 
 > Example of success:
@@ -434,7 +434,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/client`
+* Path: `/octo-spy/api/clients`
 * Method: `GET`
 * Success status: `200 - Ok`
 
@@ -447,7 +447,7 @@ curl                                  \
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/deployment/[id]
+  http://spy:8080/octo-spy/api/deployments/[id]
 ```
 
 > Example of success:
@@ -467,7 +467,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/deployment/[id]`
+* Path: `/octo-spy/api/deployments/[id]`
 * Method: `GET`
 * Query parameter:
   * `id`: id of deployment
@@ -495,7 +495,7 @@ updateDate | Date | Last update date, format: `yyyy/MM/dd HH:mm:ss`
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/deployment
+  http://spy:8080/octo-spy/api/deployments
 ```
 
 > Example of success:
@@ -521,7 +521,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/deployment`
+* Path: `/octo-spy/api/deployments`
 * Method: `GET`
 * Success status:
   * `200 - Ok`: When all resources are returned
@@ -547,7 +547,7 @@ inProgress | BOOLEAN
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/deployment/last
+  http://spy:8080/octo-spy/api/deployments/last
 ```
 
 > Example of success:
@@ -572,7 +572,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/deployment/last`
+* Path: `/octo-spy/api/deployments/last`
 * Method: `GET`
 * Success status:
   * `200 - Ok`: When all resources are returned
@@ -602,7 +602,7 @@ curl                                           \
   --header "Content-Type: application/json"    \
   --request POST                               \
   --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/deployment
+  http://spy:8080/octo-spy/api/deployments
 ```
 
 > Example of data to send:
@@ -635,8 +635,8 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
-* Path: `/octo-spy/api/deployment`
 * Token allowed: **Yes**
+* Path: `/octo-spy/api/deployments`
 * Method: `POST`
 * Data type: `JSON`
 * Success status: `201 - Created`
@@ -668,7 +668,7 @@ curl                                           \
   --header "Authorization: Basic BASE64_TOKEN" \
   --request DELETE                             \
   --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/deployment/progress
+  http://spy:8080/octo-spy/api/deployments/progress
 ```
 
 > Example of data to send:
@@ -683,8 +683,8 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
-* Path: `/octo-spy/api/deployment/progress`
 * Token allowed: **Yes**
+* Path: `/octo-spy/api/deployments/progress`
 * Method: `DELETE`
 * Data type: `JSON`
 * Success status: `204 - No content`
@@ -719,7 +719,7 @@ inProgress | BOOLEAN | No
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/environment
+  http://spy:8080/octo-spy/api/environments
 ```
 
 > Example of success:
@@ -734,7 +734,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/client`
+* Path: `/octo-spy/api/clients`
 * Method: `GET`
 * Success status: `200 - Ok`
 
@@ -785,7 +785,7 @@ version | String | Deployed version
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/project/[id]
+  http://spy:8080/octo-spy/api/projects/[id]
 ```
 
 > Example of success:
@@ -800,7 +800,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/project/[id]`
+* Path: `/octo-spy/api/projects/[id]`
 * Method: `GET`
 * Query parameter:
   * `id`: id of project
@@ -823,7 +823,7 @@ updateDate | Date | Last update date, format: `yyyy/MM/dd HH:mm:ss`
 ```bash
 curl                                  \
   --request GET                       \
-  http://spy:8080/octo-spy/api/project
+  http://spy:8080/octo-spy/api/projects
 ```
 
 > Example of success:
@@ -844,7 +844,7 @@ curl                                  \
 ```
 
 * Need to authentication: No
-* Path: `/octo-spy/api/project`
+* Path: `/octo-spy/api/projects`
 * Method: `GET`
 * Success status:
   * `200 - Ok`: When all resources are returned
@@ -867,7 +867,7 @@ curl                                           \
   --header "Content-Type: application/json"    \
   --request PATCH                              \
   --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/project/[id]
+  http://spy:8080/octo-spy/api/projects/[id]
 ```
 
 > Example of data to send:
@@ -880,8 +880,8 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
-* Path: `/octo-spy/api/project`
 * Token allowed: No
+* Path: `/octo-spy/api/projects`
 * Method: `PATCH`
 * Data type: `JSON`
 * Success status: `204 - No content`
@@ -906,7 +906,7 @@ curl                                           \
   --header "Content-Type: application/json"    \
   --request POST                               \
   --data 'DATA_TO_SEND'                        \
-  http://spy:8080/octo-spy/api/project
+  http://spy:8080/octo-spy/api/projects
 ```
 
 > Example of data to send:
@@ -931,8 +931,8 @@ curl                                           \
 ```
 
 * Need to authentication: **Yes**
-* Path: `/octo-spy/api/project`
 * Token allowed: No
+* Path: `/octo-spy/api/projects`
 * Method: `POST`
 * Data type: `JSON`
 * Success status: `201 - Created`
@@ -960,12 +960,12 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 curl                                           \
   --header "Authorization: Basic BASE64_TOKEN" \
   --request DELETE                             \
-  http://spy:8080/octo-spy/api/project/[id]
+  http://spy:8080/octo-spy/api/projects/[id]
 ```
 
 * Need to authentication: **Yes**
-* Path: `/octo-spy/api/project/[id]`
 * Token allowed: No
+* Path: `/octo-spy/api/projects/[id]`
 * Method: `DELETE`
 * Query parameter:
   * `id`: id of project
@@ -1129,7 +1129,6 @@ And many more!
 ## API refacto
 
 * Standardize all endpoint return
-* Standardize all endpoint name, example: `project` -> `projects`
 
 # Contribution
 
