@@ -340,10 +340,7 @@
                     <a href="#authentication" class="toc-h2 toc-link" data-title="Authentication">Authentication</a>
                   </li>
                   <li>
-                    <a href="#register-master-project" class="toc-h2 toc-link" data-title="Register master project">Register master project</a>
-                  </li>
-                  <li>
-                    <a href="#register-sub-project" class="toc-h2 toc-link" data-title="Register sub-project">Register sub-project</a>
+                    <a href="#create-master-and-sub-project" class="toc-h2 toc-link" data-title="Create master and sub-project">Create master and sub-project</a>
                   </li>
                   <li>
                     <a href="#register-in-progress-deployment" class="toc-h2 toc-link" data-title="Register in progress deployment">Register <code>in progress</code> deployment</a>
@@ -420,8 +417,8 @@
 
 <ul>
 <li>Database: postgresql version 13.3</li>
-<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.11.2">octo-spy</a> made in Java</li>
-<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.6.2">octo-board</a> made in Vue-js</li>
+<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.12.1">octo-spy</a> made in Java</li>
+<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.8.0">octo-board</a> made in Vue-js</li>
 </ul>
 <h2 id='docker'>Docker</h2>
 <blockquote>
@@ -433,7 +430,7 @@ docker build <span class="nt">-t</span> octo-board octo-board/
 </code></pre></div>
 <p>To use Octo with docker you must build <code>octo-spy</code> and <code>octo-board</code> images.</p>
 
-<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.3.0/docker-compose.yml">compose example</a>.</p>
+<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.4.0/docker-compose.yml">compose example</a>.</p>
 
 <p>Don&#39;t forget to setup volume for database.</p>
 <h2 id='other'>Other</h2>
@@ -460,8 +457,9 @@ Before running API for the first time, you must initialize your database with th
 <div class="highlight"><pre class="highlight shell"><code><span class="c"># Install project dependencies</span>
 npm <span class="nb">install</span> <span class="nt">--legacy-peer-deps</span>
 
-<span class="c"># Build changelog page</span>
+<span class="c"># Build changelog page and json</span>
 npm run changelog <span class="nt">--silent</span> <span class="o">&gt;</span> public/changelog.html
+RUN npm run changelogToJson
 
 <span class="c"># Build project</span>
 npm run build
@@ -520,7 +518,7 @@ Default user password is <code>password</code>.</p>
 <td>Database user password.</td>
 </tr>
 </tbody></table>
-<h1 id='usages'>Usages</h1><h2 id='authentication'>Authentication</h2>
+<h1 id='usages'>Usages</h1><h2 id='authentication'>Authentication</h2><h3 id='basic-authentication'>Basic authentication</h3>
 <blockquote>
 <p>Authentication example to get user information</p>
 </blockquote>
@@ -530,50 +528,20 @@ Default user password is <code>password</code>.</p>
   http://spy:8080/octo-spy/api/users/me
 </code></pre></div>
 <p>You need to encode in base64 your <code>user:password</code>.</p>
-<h2 id='register-master-project'>Register master project</h2>
+<h3 id='token-authentication'>Token authentication</h3>
 <blockquote>
-<p>Register octo as master project</p>
+<p>Authentication example to get user information</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
-  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
-  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
-  <span class="nt">--request</span> POST                               <span class="se">\</span>
-  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                                 <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project
+  <span class="nt">--header</span> <span class="s2">"Authorization: Token TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--request</span> GET                                <span class="se">\</span>
+  http://spy:8080/octo-spy/api/users/me
 </code></pre></div>
-<blockquote>
-<p>Data to send:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"isMaster"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>A master project is a project that contains multiple sub-projects.</p>
+<p>You need to use token given by application when you create a token.</p>
+<h2 id='create-master-and-sub-project'>Create master and sub-project</h2>
+<p>Go to octo-board, as administrator go to master project page, to create master project.</p>
 
-<p>Default dashboard application displays only master projects.</p>
-<h2 id='register-sub-project'>Register sub-project</h2>
-<blockquote>
-<p>Register octo-spy as sup-project of octo</p>
-</blockquote>
-<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
-  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
-  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
-  <span class="nt">--request</span> POST                               <span class="se">\</span>
-  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project
-</code></pre></div>
-<blockquote>
-<p>Data to send:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo-spy"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"masterName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>A sub-project is a component of master project.</p>
-
-<p>For example, <code>octo-spy</code> and <code>octo-board</code> are a sub-projects of <code>octo</code>.</p>
+<p>To create sub-project, still as administrator, go to master project page and go to sub-project page.</p>
 <h2 id='register-in-progress-deployment'>Register <code>in progress</code> deployment</h2>
 <blockquote>
 <p>Register new <code>in progress</code> deployment for octo-spy version 1.0.0 in production for SomeClient</p>
@@ -583,7 +551,7 @@ Default user password is <code>password</code>.</p>
   <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
   <span class="nt">--request</span> POST                               <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment
+  http://spy:8080/octo-spy/api/deployments
 </code></pre></div>
 <blockquote>
 <p>Data to send:</p>
@@ -618,7 +586,7 @@ Default user password is <code>password</code>.</p>
   <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
   <span class="nt">--request</span> DELETE                             <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment/progress
+  http://spy:8080/octo-spy/api/deployments/progress
 </code></pre></div>
 <blockquote>
 <p>Data to send:</p>
@@ -784,6 +752,7 @@ Default user password is <code>password</code>.</p>
 </code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: No</li>
 <li>Path: <code>/octo-spy/api/administrator/password</code></li>
 <li>Method: <code>PUT</code></li>
 <li>Data type: <code>String</code> encoded in base64</li>
@@ -810,6 +779,7 @@ Default user password is <code>password</code>.</p>
 </code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: No</li>
 <li>Path: <code>/octo-spy/api/administrator/email</code></li>
 <li>Method: <code>PUT</code></li>
 <li>Data type: <code>String</code></li>
@@ -846,6 +816,7 @@ Default user password is <code>password</code>.</p>
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: No</li>
 <li>Path: <code>/octo-spy/api/alerts</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status:
@@ -893,7 +864,7 @@ Default user password is <code>password</code>.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/client
+  http://spy:8080/octo-spy/api/clients
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -902,7 +873,7 @@ Default user password is <code>password</code>.</p>
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/client</code></li>
+<li>Path: <code>/octo-spy/api/clients</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status: <code>200 - Ok</code></li>
 </ul>
@@ -912,7 +883,7 @@ Default user password is <code>password</code>.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment/[id]
+  http://spy:8080/octo-spy/api/deployments/[id]
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -931,7 +902,7 @@ Default user password is <code>password</code>.</p>
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/deployment/[id]</code></li>
+<li>Path: <code>/octo-spy/api/deployments/[id]</code></li>
 <li>Method: <code>GET</code></li>
 <li>Query parameter:
 
@@ -1006,7 +977,7 @@ Default user password is <code>password</code>.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment
+  http://spy:8080/octo-spy/api/deployments
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -1031,7 +1002,7 @@ Default user password is <code>password</code>.</p>
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/deployment</code></li>
+<li>Path: <code>/octo-spy/api/deployments</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status:
 
@@ -1088,7 +1059,7 @@ Default user password is <code>password</code>.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment/last
+  http://spy:8080/octo-spy/api/deployments/last
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -1112,7 +1083,7 @@ Default user password is <code>password</code>.</p>
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/deployment/last</code></li>
+<li>Path: <code>/octo-spy/api/deployments/last</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status:
 
@@ -1176,7 +1147,7 @@ Default user password is <code>password</code>.</p>
   <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
   <span class="nt">--request</span> POST                               <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment
+  http://spy:8080/octo-spy/api/deployments
 </code></pre></div>
 <blockquote>
 <p>Example of data to send:</p>
@@ -1207,7 +1178,8 @@ Default user password is <code>password</code>.</p>
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
-<li>Path: <code>/octo-spy/api/deployment</code></li>
+<li>Token allowed: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/deployments</code></li>
 <li>Method: <code>POST</code></li>
 <li>Data type: <code>JSON</code></li>
 <li>Success status: <code>201 - Created</code></li>
@@ -1278,7 +1250,7 @@ If alive is set to <code>true</code>, this will disable previous deployment with
   <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
   <span class="nt">--request</span> DELETE                             <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/deployment/progress
+  http://spy:8080/octo-spy/api/deployments/progress
 </code></pre></div>
 <blockquote>
 <p>Example of data to send:</p>
@@ -1292,7 +1264,8 @@ If alive is set to <code>true</code>, this will disable previous deployment with
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
-<li>Path: <code>/octo-spy/api/deployment/progress</code></li>
+<li>Token allowed: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/deployments/progress</code></li>
 <li>Method: <code>DELETE</code></li>
 <li>Data type: <code>JSON</code></li>
 <li>Success status: <code>204 - No content</code></li>
@@ -1369,7 +1342,7 @@ Data is used to identify progress deployment to delete.
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/environment
+  http://spy:8080/octo-spy/api/environments
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -1383,7 +1356,7 @@ Data is used to identify progress deployment to delete.
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/client</code></li>
+<li>Path: <code>/octo-spy/api/clients</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status: <code>200 - Ok</code></li>
 </ul>
@@ -1465,7 +1438,7 @@ Data is used to identify progress deployment to delete.
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project/[id]
+  http://spy:8080/octo-spy/api/projects/[id]
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -1479,7 +1452,7 @@ Data is used to identify progress deployment to delete.
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/project/[id]</code></li>
+<li>Path: <code>/octo-spy/api/projects/[id]</code></li>
 <li>Method: <code>GET</code></li>
 <li>Query parameter:
 
@@ -1529,7 +1502,7 @@ Data is used to identify progress deployment to delete.
 </blockquote>
 <div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
   <span class="nt">--request</span> GET                       <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project
+  http://spy:8080/octo-spy/api/projects
 </code></pre></div>
 <blockquote>
 <p>Example of success:</p>
@@ -1549,7 +1522,7 @@ Data is used to identify progress deployment to delete.
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: No</li>
-<li>Path: <code>/octo-spy/api/project</code></li>
+<li>Path: <code>/octo-spy/api/projects</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status:
 
@@ -1585,7 +1558,7 @@ Data is used to identify progress deployment to delete.
   <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
   <span class="nt">--request</span> PATCH                              <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project/[id]
+  http://spy:8080/octo-spy/api/projects/[id]
 </code></pre></div>
 <blockquote>
 <p>Example of data to send:</p>
@@ -1597,7 +1570,8 @@ Data is used to identify progress deployment to delete.
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
-<li>Path: <code>/octo-spy/api/project</code></li>
+<li>Token allowed: No</li>
+<li>Path: <code>/octo-spy/api/projects</code></li>
 <li>Method: <code>PATCH</code></li>
 <li>Data type: <code>JSON</code></li>
 <li>Success status: <code>204 - No content</code></li>
@@ -1641,7 +1615,7 @@ Data is used to identify progress deployment to delete.
   <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
   <span class="nt">--request</span> POST                               <span class="se">\</span>
   <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project
+  http://spy:8080/octo-spy/api/projects
 </code></pre></div>
 <blockquote>
 <p>Example of data to send:</p>
@@ -1664,7 +1638,8 @@ Data is used to identify progress deployment to delete.
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
-<li>Path: <code>/octo-spy/api/project</code></li>
+<li>Token allowed: No</li>
+<li>Path: <code>/octo-spy/api/projects</code></li>
 <li>Method: <code>POST</code></li>
 <li>Data type: <code>JSON</code></li>
 <li>Success status: <code>201 - Created</code></li>
@@ -1716,11 +1691,12 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 <div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
   <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
   <span class="nt">--request</span> DELETE                             <span class="se">\</span>
-  http://spy:8080/octo-spy/api/project/[id]
+  http://spy:8080/octo-spy/api/projects/[id]
 </code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
-<li>Path: <code>/octo-spy/api/project/[id]</code></li>
+<li>Token allowed: No</li>
+<li>Path: <code>/octo-spy/api/projects/[id]</code></li>
 <li>Method: <code>DELETE</code></li>
 <li>Query parameter:
 
@@ -1762,6 +1738,7 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 </span></code></pre></div>
 <ul>
 <li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: <strong>Yes</strong></li>
 <li>Path: <code>/octo-spy/api/users/me</code></li>
 <li>Method: <code>GET</code></li>
 <li>Success status: <code>200 - Ok</code></li>
@@ -1815,12 +1792,101 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 <td>List of user role</td>
 </tr>
 </tbody></table>
+<h3 id='create-a-user-token'>Create a user token</h3>
+<blockquote>
+<p>Create a user token</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
+  <span class="nt">--request</span> POST                               <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/users/token
+</code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="err">TOKEN_NAME</span><span class="w">
+</span></code></pre></div>
+<blockquote>
+<p>Example of success:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"generated token value"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: No</li>
+<li>Path: <code>/octo-spy/api/users/token</code></li>
+<li>Method: <code>POST</code></li>
+<li>Data type: <code>JSON</code></li>
+<li>Success status: <code>201 - Created</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>400 - Wrong field value</code>: On duplicate token name for an user</li>
+</ul></li>
+</ul>
+
+<p>Body parameters: Token name.</p>
+<h3 id='delete-a-user-token'>Delete a user token</h3>
+<blockquote>
+<p>delete a user token</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--request</span> DELETE                             <span class="se">\</span>
+  http://spy:8080/octo-spy/api/users/token/[name]
+</code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: No</li>
+<li>Path: <code>/octo-spy/api/users/token/[name]</code></li>
+<li>Method: <code>DELETE</code></li>
+<li>Query parameter:
+
+<ul>
+<li><code>name</code>: token name</li>
+</ul></li>
+<li>Success status: <code>204 - No content</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>400 - Field value is empty</code>: On blank name</li>
+<li><code>404 - Entity not found</code>: On unknown token for user</li>
+</ul></li>
+</ul>
+<h3 id='get-all-token-39-s-names-of-a-user'>Get all token&#39;s names of a user</h3>
+<blockquote>
+<p>Get all token&#39;s names of a user</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--request</span> GET                                <span class="se">\</span>
+  http://spy:8080/octo-spy/api/users/token
+</code></pre></div>
+<blockquote>
+<p>Example of success:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="s2">"token1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"token2"</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: Yes</li>
+<li>Token allowed: No</li>
+<li>Path: <code>/octo-spy/api/users/token</code></li>
+<li>Method: <code>GET</code></li>
+<li>Success status:
+
+<ul>
+<li><code>200 - Ok</code>: When all resources are returned</li>
+</ul></li>
+</ul>
 <h1 id='future-developments'>Future developments</h1><h2 id='new-features'>New Features</h2>
 <ul>
-<li>Generate token to avoid using administrator password (include new authentication type)</li>
 <li>Add, update and delete environment form</li>
 <li>Delete deployment in historic page</li>
-<li>Create/delete project in administration page</li>
+<li>Delete master project</li>
 <li>LDAP authentication, imply this features:
 
 <ul>
@@ -1844,7 +1910,6 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 <h2 id='api-refacto'>API refacto</h2>
 <ul>
 <li>Standardize all endpoint return</li>
-<li>Standardize all endpoint name, example: <code>project</code> -&gt; <code>projects</code></li>
 </ul>
 <h1 id='contribution'>Contribution</h1>
 <p>Octo community is growing incredibly fast and if you’re reading this, there’s a good chance you’re ready to join it. So… welcome!</p>
