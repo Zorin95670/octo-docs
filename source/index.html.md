@@ -22,7 +22,7 @@ Octo is composed of three components:
 
 * Database: postgresql version 13.3
 * API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.12.1) made in Java
-* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.8.0) made in Vue-js
+* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.8.1) made in Vue-js
 
 ## Docker
 > Build `octo-spy` and `octo-board` docker images:
@@ -1075,7 +1075,7 @@ curl                                           \
   * `400 - Field value is empty`: On blank name
   * `404 - Entity not found`: On unknown token for user
 
-### Get all token's names of a user 
+### Get all token's names of a user
 
 > Get all token's names of a user
 
