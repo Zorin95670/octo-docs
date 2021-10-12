@@ -1278,9 +1278,6 @@ curl                                           \
 
 ## New Features
 
-* Add, update and delete environment form
-* Delete deployment in historic page
-* Delete master project
 * LDAP authentication, imply this features:
   * LDAP settings page
   * Managing user (enable/disable and add new user)
