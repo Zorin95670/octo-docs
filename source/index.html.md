@@ -21,8 +21,8 @@ Welcome to the Octo! You can use this tools to register and display all applicat
 Octo is composed of three components:
 
 * Database: postgresql version 13.3
-* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.12.1) made in Java
-* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.8.1) made in Vue-js
+* API: [octo-spy](https://github.com/Zorin95670/octo-spy/tree/1.13.0) made in Java
+* Web application: [octo-board](https://github.com/Zorin95670/octo-board/tree/2.9.0) made in Vue-js
 
 ## Docker
 > Build `octo-spy` and `octo-board` docker images:
@@ -35,7 +35,7 @@ docker build -t octo-board octo-board/
 
 To use Octo with docker you must build `octo-spy` and `octo-board` images.
 
-Once images build, you can setup your environment like the [compose example](https://github.com/Zorin95670/octo/blob/1.4.0/docker-compose.yml).
+Once images build, you can setup your environment like the [compose example](https://github.com/Zorin95670/octo/blob/1.5.0/docker-compose.yml).
 
 Don't forget to setup volume for database.
 
@@ -653,6 +653,55 @@ version | String | Yes | Deployed version
 alive | Boolean | No, default `false` | Is still alive.
 inProgress | Boolean | No, default `false` | Is in progress.
 
+### Update a deployment
+
+> Update a deployment
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --header "Content-Type: application/json"    \
+  --request PATCH                              \
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/deployments/[id]
+```
+
+> Example of data to send:
+
+```json
+{
+  "environment": "Production",
+  "project": "octo-spy",
+  "client": "SomeClient",
+  "version": "1.0.0",
+  "alive" : true,
+  "inProgress" : true
+}
+```
+
+* Need to authentication: **Yes**
+* Token allowed: **Yes**
+* Path: `/octo-spy/api/deployments/[id]`
+* Method: `PATCH`
+* Query parameter:
+  * `id`: id of deployment
+* Data type: `JSON`
+* Success status: `204 - No content`
+* Errors status:
+  * `400 - Field value is empty`: On blank environment, project, client or version
+  * `404 - Entity not found`: On unknown environment or project
+
+Body parameters:
+
+Key | Type | Mandatory | Description
+--- | ---- | --------- | -----------
+environment | String | Yes | Environment name
+project | String | Yes | Project name
+client | String | Yes | Client name
+version | String | Yes | Deployed version
+alive | Boolean | No, default `false` | Is still alive.
+inProgress | Boolean | No, default `false` | Is in progress.
+
 ### Delete progress of a deployment
 
 > delete a deployment
@@ -722,7 +771,8 @@ curl                                  \
 [
   {
     "id": 1,
-    "name": "Production"
+    "name": "Production",
+    "position": 0
   }
 ]
 ```
@@ -736,6 +786,131 @@ Key | Type | Description
 --- | ---- | -----------
 id | Number | Primary key
 name | String | Environment name
+
+### Create an environment
+
+> Create an environment
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --header "Content-Type: application/json"    \
+  --request POST                               \
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/environments
+```
+
+> Example of data to send:
+
+```json
+{
+  "name": "Production",
+  "position": 1
+}
+```
+
+> Example of success:
+
+```json
+{
+  "id": 1,
+  "name": "Production",
+  "position": 1
+}
+```
+
+* Need to authentication: **Yes**
+* Token allowed: **Yes**
+* Path: `/octo-spy/api/environments`
+* Method: `POST`
+* Data type: `JSON`
+* Success status: `201 - Created`
+* Errors status:
+  * `400 - Field value is empty`: On blank name
+  * `400 - Wrong field value.`: On duplicate name
+
+Body parameters:
+
+Key | Type | Mandatory | Description
+--- | ---- | --------- | -----------
+name | String | Yes | Environment name
+position | Integer | No | Order of environment
+
+### Update an environment
+
+> Update an environment
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --header "Content-Type: application/json"    \
+  --request PATCH                              \
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/environments/[id]
+```
+
+> Example of data to send:
+
+```json
+{
+  "name": "Production",
+  "position": 1
+}
+```
+
+* Need to authentication: **Yes**
+* Token allowed: **Yes**
+* Path: `/octo-spy/api/environments/[id]`
+* Method: `PATCH`
+* Query parameter:
+  * `id`: id of environment
+* Data type: `JSON`
+* Success status: `204 - No content`
+* Errors status:
+  * `400 - Field value is empty`: On blank name
+  * `400 - Wrong field value.`: On duplicate name
+  * `404 - Entity not found`: On unknown environment
+
+Body parameters:
+
+Key | Type | Mandatory | Description
+--- | ---- | --------- | -----------
+name | String | No | Environment name
+position | Integer | No | Order of environment
+
+### Delete an environment
+
+> delete an environment
+
+```bash
+curl                                           \
+  --header "Authorization: Basic BASE64_TOKEN" \
+  --request DELETE                             \
+  --data 'DATA_TO_SEND'                        \
+  http://spy:8080/octo-spy/api/environments/[id]
+```
+
+> Example of data to send:
+
+```json
+{
+  "environment": "Production",
+  "project": "octo-spy",
+  "client": "SomeClient",
+  "version": "1.0.0",
+}
+```
+
+* Need to authentication: **Yes**
+* Token allowed: **Yes**
+* Path: `/octo-spy/api/environments`
+* Method: `DELETE`
+* Query parameter:
+  * `id`: id of environment
+* Data type: `JSON`
+* Success status: `204 - No content`
+* Errors status:
+  * `404 - Entity not found`: On unknown id
 
 ## Application information
 
@@ -1103,9 +1278,6 @@ curl                                           \
 
 ## New Features
 
-* Add, update and delete environment form
-* Delete deployment in historic page
-* Delete master project
 * LDAP authentication, imply this features:
   * LDAP settings page
   * Managing user (enable/disable and add new user)
