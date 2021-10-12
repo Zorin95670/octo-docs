@@ -417,8 +417,8 @@
 
 <ul>
 <li>Database: postgresql version 13.3</li>
-<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.12.1">octo-spy</a> made in Java</li>
-<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.8.1">octo-board</a> made in Vue-js</li>
+<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.13.0">octo-spy</a> made in Java</li>
+<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.9.0">octo-board</a> made in Vue-js</li>
 </ul>
 <h2 id='docker'>Docker</h2>
 <blockquote>
@@ -430,7 +430,7 @@ docker build <span class="nt">-t</span> octo-board octo-board/
 </code></pre></div>
 <p>To use Octo with docker you must build <code>octo-spy</code> and <code>octo-board</code> images.</p>
 
-<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.4.0/docker-compose.yml">compose example</a>.</p>
+<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.5.0/docker-compose.yml">compose example</a>.</p>
 
 <p>Don&#39;t forget to setup volume for database.</p>
 <h2 id='other'>Other</h2>
@@ -1242,6 +1242,96 @@ If alive is set to <code>true</code>, this will disable previous deployment with
 <td>Is in progress.</td>
 </tr>
 </tbody></table>
+<h3 id='update-a-deployment'>Update a deployment</h3>
+<blockquote>
+<p>Update a deployment</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
+  <span class="nt">--request</span> PATCH                              <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/deployments/[id]
+</code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"project"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo-spy"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"client"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeClient"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"alive"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"inProgress"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/deployments/[id]</code></li>
+<li>Method: <code>PATCH</code></li>
+<li>Query parameter:
+
+<ul>
+<li><code>id</code>: id of deployment</li>
+</ul></li>
+<li>Data type: <code>JSON</code></li>
+<li>Success status: <code>204 - No content</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>400 - Field value is empty</code>: On blank environment, project, client or version</li>
+<li><code>404 - Entity not found</code>: On unknown environment or project</li>
+</ul></li>
+</ul>
+
+<p>Body parameters:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>environment</td>
+<td>String</td>
+<td>Yes</td>
+<td>Environment name</td>
+</tr>
+<tr>
+<td>project</td>
+<td>String</td>
+<td>Yes</td>
+<td>Project name</td>
+</tr>
+<tr>
+<td>client</td>
+<td>String</td>
+<td>Yes</td>
+<td>Client name</td>
+</tr>
+<tr>
+<td>version</td>
+<td>String</td>
+<td>Yes</td>
+<td>Deployed version</td>
+</tr>
+<tr>
+<td>alive</td>
+<td>Boolean</td>
+<td>No, default <code>false</code></td>
+<td>Is still alive.</td>
+</tr>
+<tr>
+<td>inProgress</td>
+<td>Boolean</td>
+<td>No, default <code>false</code></td>
+<td>Is in progress.</td>
+</tr>
+</tbody></table>
 <h3 id='delete-progress-of-a-deployment'>Delete progress of a deployment</h3>
 <blockquote>
 <p>delete a deployment</p>
@@ -1350,7 +1440,8 @@ Data is used to identify progress deployment to delete.
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
@@ -1379,6 +1470,173 @@ Data is used to identify progress deployment to delete.
 <td>Environment name</td>
 </tr>
 </tbody></table>
+<h3 id='create-an-environment'>Create an environment</h3>
+<blockquote>
+<p>Create an environment</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
+  <span class="nt">--request</span> POST                               <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/environments
+</code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<blockquote>
+<p>Example of success:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/environments</code></li>
+<li>Method: <code>POST</code></li>
+<li>Data type: <code>JSON</code></li>
+<li>Success status: <code>201 - Created</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>400 - Field value is empty</code>: On blank name</li>
+<li><code>400 - Wrong field value.</code>: On duplicate name</li>
+</ul></li>
+</ul>
+
+<p>Body parameters:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Environment name</td>
+</tr>
+<tr>
+<td>position</td>
+<td>Integer</td>
+<td>No</td>
+<td>Order of environment</td>
+</tr>
+</tbody></table>
+<h3 id='update-an-environment'>Update an environment</h3>
+<blockquote>
+<p>Update an environment</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span>    <span class="se">\</span>
+  <span class="nt">--request</span> PATCH                              <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/environments/[id]
+</code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/environments/[id]</code></li>
+<li>Method: <code>PATCH</code></li>
+<li>Query parameter:
+
+<ul>
+<li><code>id</code>: id of environment</li>
+</ul></li>
+<li>Data type: <code>JSON</code></li>
+<li>Success status: <code>204 - No content</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>400 - Field value is empty</code>: On blank name</li>
+<li><code>400 - Wrong field value.</code>: On duplicate name</li>
+<li><code>404 - Entity not found</code>: On unknown environment</li>
+</ul></li>
+</ul>
+
+<p>Body parameters:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>No</td>
+<td>Environment name</td>
+</tr>
+<tr>
+<td>position</td>
+<td>Integer</td>
+<td>No</td>
+<td>Order of environment</td>
+</tr>
+</tbody></table>
+<h3 id='delete-an-environment'>Delete an environment</h3>
+<blockquote>
+<p>delete an environment</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                           <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s2">"Authorization: Basic BASE64_TOKEN"</span> <span class="se">\</span>
+  <span class="nt">--request</span> DELETE                             <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'DATA_TO_SEND'</span>                        <span class="se">\</span>
+  http://spy:8080/octo-spy/api/environments/[id]
+</code></pre></div>
+<blockquote>
+<p>Example of data to send:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Production"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"project"</span><span class="p">:</span><span class="w"> </span><span class="s2">"octo-spy"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"client"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeClient"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: <strong>Yes</strong></li>
+<li>Token allowed: <strong>Yes</strong></li>
+<li>Path: <code>/octo-spy/api/environments</code></li>
+<li>Method: <code>DELETE</code></li>
+<li>Query parameter:
+
+<ul>
+<li><code>id</code>: id of environment</li>
+</ul></li>
+<li>Data type: <code>JSON</code></li>
+<li>Success status: <code>204 - No content</code></li>
+<li>Errors status:
+
+<ul>
+<li><code>404 - Entity not found</code>: On unknown id</li>
+</ul></li>
+</ul>
 <h2 id='application-information'>Application information</h2>
 <blockquote>
 <p>Get application information</p>
@@ -1884,9 +2142,6 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 </ul>
 <h1 id='future-developments'>Future developments</h1><h2 id='new-features'>New Features</h2>
 <ul>
-<li>Add, update and delete environment form</li>
-<li>Delete deployment in historic page</li>
-<li>Delete master project</li>
 <li>LDAP authentication, imply this features:
 
 <ul>
