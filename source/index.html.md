@@ -250,8 +250,18 @@ Key | Type | Description
 --- | ---- | -----------
 message | String | Generic error's message.
 field | String | Field name where error occurs
+fields | String | Field name where error occurs
 value | String | Field value or error explanation
 cause | String | Stack trace of the error.
+
+<aside class="notice">Fields can only be used with the report endpoint.</aside>
+<aside class="notice">
+  Fields corresponding to multiple field, you can declare multiple fields in query parameters with it.
+  <br/>
+  Example:
+  <br/>
+  <code>/report/deployments?fields=project&fields=client</code>
+</aside>
 
 ## Query filter explanation
 
@@ -1142,6 +1152,61 @@ curl                                           \
 * Errors status:
   * `400 - Field value is empty`: On blank id
   * `404 - Entity not found`: On unknown id
+
+## Report
+
+### Deployments
+
+> Deployments report
+
+```bash
+curl                                  \
+  --request GET                       \
+  http://spy:8080/octo-spy/api/report/deployments
+```
+
+> Example of success:
+
+```json
+[{
+  "id": 0,
+  "masterProject": null,
+  "project": null,
+  "environment": null,
+  "client": null,
+  "year": 0,
+  "month": 0,
+  "dayOfWeek": 0,
+  "day": 0,
+  "hour": 0,
+  "count": 0
+}]
+```
+
+* Need to authentication: No
+* Path: `/octo-spy/api/report/deployments`
+* Method: `GET`
+* Success status:
+  * `200 - Ok`: When all resources are returned
+
+Available query parameters:
+
+Field name | Search type
+---------- | -----------
+id | NUMBER
+masterProject | NUMBER
+project | NUMBER
+environment | NUMBER
+client | TEXT
+year | NUMBER
+month | NUMBER
+dayOfWeek | NUMBER
+day | NUMBER
+hour | NUMBER
+
+<aside class="notice">
+<code>fields</code> is used to select wanted attributes in response.
+</aside>
 
 ## User
 
