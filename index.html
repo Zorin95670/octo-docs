@@ -384,6 +384,9 @@
                     <a href="#project" class="toc-h2 toc-link" data-title="Project">Project</a>
                   </li>
                   <li>
+                    <a href="#report" class="toc-h2 toc-link" data-title="Report">Report</a>
+                  </li>
+                  <li>
                     <a href="#user" class="toc-h2 toc-link" data-title="User">User</a>
                   </li>
               </ul>
@@ -417,8 +420,8 @@
 
 <ul>
 <li>Database: postgresql version 13.3</li>
-<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.13.0">octo-spy</a> made in Java</li>
-<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.9.0">octo-board</a> made in Vue-js</li>
+<li>API: <a href="https://github.com/Zorin95670/octo-spy/tree/1.14.0">octo-spy</a> made in Java</li>
+<li>Web application: <a href="https://github.com/Zorin95670/octo-board/tree/2.10.0">octo-board</a> made in Vue-js</li>
 </ul>
 <h2 id='docker'>Docker</h2>
 <blockquote>
@@ -430,7 +433,7 @@ docker build <span class="nt">-t</span> octo-board octo-board/
 </code></pre></div>
 <p>To use Octo with docker you must build <code>octo-spy</code> and <code>octo-board</code> images.</p>
 
-<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.5.0/docker-compose.yml">compose example</a>.</p>
+<p>Once images build, you can setup your environment like the <a href="https://github.com/Zorin95670/octo/blob/1.6.0/docker-compose.yml">compose example</a>.</p>
 
 <p>Don&#39;t forget to setup volume for database.</p>
 <h2 id='other'>Other</h2>
@@ -664,6 +667,11 @@ Default user password is <code>password</code>.</p>
 <td>Field name where error occurs</td>
 </tr>
 <tr>
+<td>fields</td>
+<td>String</td>
+<td>Field name where error occurs</td>
+</tr>
+<tr>
 <td>value</td>
 <td>String</td>
 <td>Field value or error explanation</td>
@@ -674,6 +682,16 @@ Default user password is <code>password</code>.</p>
 <td>Stack trace of the error.</td>
 </tr>
 </tbody></table>
+
+<aside class="notice">Fields can only be used with the report endpoint.</aside>
+
+<aside class="notice">
+  Fields corresponding to multiple field, you can declare multiple fields in query parameters with it.
+  <br/>
+  Example:
+  <br/>
+  <code>/report/deployments?fields=project&fields=client</code>
+</aside>
 <h2 id='query-filter-explanation'>Query filter explanation</h2>
 <p>On some endpoints, you can use search field to filter your resources.</p>
 
@@ -1969,6 +1987,95 @@ If <code>isMaster</code> is set to <code>true</code>, you cannot set masterName.
 <li><code>404 - Entity not found</code>: On unknown id</li>
 </ul></li>
 </ul>
+<h2 id='report'>Report</h2><h3 id='deployments'>Deployments</h3>
+<blockquote>
+<p>Deployments report</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell"><code>curl                                  <span class="se">\</span>
+  <span class="nt">--request</span> GET                       <span class="se">\</span>
+  http://spy:8080/octo-spy/api/report/deployments
+</code></pre></div>
+<blockquote>
+<p>Example of success:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"masterProject"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"project"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"environment"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"client"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"year"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"month"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"dayOfWeek"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"hour"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Need to authentication: No</li>
+<li>Path: <code>/octo-spy/api/report/deployments</code></li>
+<li>Method: <code>GET</code></li>
+<li>Success status:
+
+<ul>
+<li><code>200 - Ok</code>: When all resources are returned</li>
+</ul></li>
+</ul>
+
+<p>Available query parameters:</p>
+
+<table><thead>
+<tr>
+<th>Field name</th>
+<th>Search type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>masterProject</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>project</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>environment</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>client</td>
+<td>TEXT</td>
+</tr>
+<tr>
+<td>year</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>month</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>dayOfWeek</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>day</td>
+<td>NUMBER</td>
+</tr>
+<tr>
+<td>hour</td>
+<td>NUMBER</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+<code>fields</code> is used to select wanted attributes in response.
+</aside>
 <h2 id='user'>User</h2><h3 id='get-my-information'>Get my information</h3>
 <blockquote>
 <p>Get my information</p>
